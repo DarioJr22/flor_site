@@ -1,7 +1,9 @@
 import { Heart, Instagram, MapPin, Phone, Facebook } from 'lucide-react';
 import type { RestaurantInfo } from '../lib/types';
+import { getPublicUrl, BUCKETS } from '../../lib/storage';
 
 const INSTAGRAM_URL = 'https://www.instagram.com/flordomaracuja21/';
+const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
 
 interface FooterProps {
   info: RestaurantInfo;
@@ -17,7 +19,7 @@ export function Footer({ info }: FooterProps) {
           {/* About */}
           <div>
             <div className="mb-4 flex items-center gap-2 text-2xl">
-              <span className="text-3xl">🌺</span>
+              <img src={LOGO_URL} alt="Flor do Maracujá" className="h-10 w-10 rounded-full object-cover" />
               <span>Flor do Maracujá</span>
             </div>
             <p className="mb-4 text-gray-400">

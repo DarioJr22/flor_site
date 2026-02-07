@@ -2,29 +2,36 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, MessageCircle, UtensilsCrossed, ExternalLink } from 'lucide-react';
 import { Button } from './ui/button';
+import { getPublicUrl, BUCKETS } from '../../lib/storage';
 
-const IFOOD_URL = 'https://www.ifood.com.br/delivery/porto-velho-ro/flor-do-maracuja';
+const IFOOD_URL = 'https://www.ifood.com.br/delivery/recife-pe/flor-do-maracuja-imbiribeira/e1a8cc86-aee4-4e93-8d4a-3f253b9df32c?utm_medium=share&utm_source=ig&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGn7kwG0ZsoqkBsMtYVQRzbH3TaPCfZ1WpnZclazgwt2CqygfYHM5IVEo9soBQ_aem_R-i7y_Swrc9Om3_6g_55pA';
 
+const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
+
+// Para trocar as imagens:
+// 1. Acesse o dashboard do Supabase → Storage → bucket "landing-page"
+// 2. Faça upload das imagens na pasta "hero/"
+// 3. Atualize os paths abaixo com o nome exato dos arquivos enviados
 const heroImages = [
   {
-    url: 'https://images.unsplash.com/photo-1675106643937-791e74751488?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920',
-    title: 'Sabores Autênticos',
-    subtitle: 'Da Cozinha Regional Brasileira',
+    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/fachada.png'),
+    title: 'Bem-vindo ao Flor do Maracujá',
   },
   {
-    url: 'https://images.unsplash.com/photo-1762305194194-6896afafecb7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920',
-    title: 'Moqueca Capixaba',
-    subtitle: 'Receita Tradicional da Família',
+    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta.png'),
+    title: 'Receitas Caseiras',
   },
   {
-    url: 'https://images.unsplash.com/photo-1663213990116-a43ddb308859?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920',
-    title: 'Picanha Premium',
-    subtitle: 'Grelhada no Ponto Perfeito',
+    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_2.png'),
+    title: 'Referência de qualidade há mais de 15 anos',
   },
   {
-    url: 'https://images.unsplash.com/photo-1759893497816-129ce94f1b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920',
-    title: 'Ambiente Acolhedor',
-    subtitle: 'Onde Cada Refeição é uma Celebração',
+    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_3.png'),
+    title: 'Planos especiais para empresas',
+  },
+  {
+    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/vem_comer_banner.png'),
+    title: 'No local, para viagem e delivery',
   },
 ];
 
@@ -35,8 +42,6 @@ interface HeroCarouselProps {
 
 export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [typedText, setTypedText] = useState('');
-  const fullText = 'Flor do Maracujá';
 
   // Auto-advance carousel
   useEffect(() => {
@@ -46,22 +51,6 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
 
     return () => clearInterval(timer);
   }, []);
-
-  // Typing effect
-  useEffect(() => {
-    setTypedText('');
-    let currentIndex = 0;
-    const typingTimer = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setTypedText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typingTimer);
-      }
-    }, 100);
-
-    return () => clearInterval(typingTimer);
-  }, [currentSlide]);
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
@@ -85,81 +74,62 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url(${image.url})` }}
           />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
         </motion.div>
       ))}
 
       {/* Content */}
       <div className="relative z-10 flex h-full flex-col items-center justify-center px-4 text-center text-white">
-        {/* Animated Logo/Title */}
+        {/* Logo + Name */}
         <motion.div
-          initial={{ y: -50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.3, duration: 0.8 }}
-          className="mb-4"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          className="mb-6"
         >
-          <div className="mb-4 flex items-center justify-center">
-            <motion.div
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-            >
-              <span className="text-6xl">🌺</span>
-            </motion.div>
-          </div>
-          <h1 className="font-display mb-2 text-5xl md:text-7xl">
-            {typedText}
-            <motion.span
-              animate={{ opacity: [1, 0] }}
-              transition={{ duration: 0.8, repeat: Infinity }}
-              className="ml-1 inline-block"
-            >
-              |
-            </motion.span>
+          <img
+            src={LOGO_URL}
+            alt="Flor do Maracujá"
+            className="mx-auto mb-4 h-24 w-24 rounded-full object-cover shadow-xl"
+          />
+          <h1 className="font-display text-4xl tracking-wide md:text-6xl">
+            Flor do Maracujá
           </h1>
-          <p className="text-xl text-[#FFC107] md:text-2xl">
-            Cozinha Regional com Sabor de Casa
-          </p>
         </motion.div>
 
-        {/* Slide Title Animation */}
+        {/* Slide Title */}
         <AnimatePresence mode="wait">
-          <motion.div
+          <motion.p
             key={currentSlide}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="mb-8 max-w-2xl"
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.4 }}
+            className="mb-10 text-lg font-light tracking-wide text-white/80 md:text-xl"
           >
-            <h2 className="mb-2 text-3xl md:text-5xl">
-              {heroImages[currentSlide].title}
-            </h2>
-            <p className="text-lg text-gray-300 md:text-xl">
-              {heroImages[currentSlide].subtitle}
-            </p>
-          </motion.div>
+            {heroImages[currentSlide].title}
+          </motion.p>
         </AnimatePresence>
 
         {/* CTA Buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          className="flex flex-col gap-4 sm:flex-row"
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="flex flex-col gap-3 sm:flex-row"
         >
           <Button
             size="lg"
-            className="group bg-[#FFC107] text-black hover:bg-[#D4A017]"
+            className="bg-[#FFC107] text-black hover:bg-[#D4A017]"
             onClick={onExploreClick}
           >
-            <UtensilsCrossed className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
+            <UtensilsCrossed className="mr-2 h-5 w-5" />
             Explorar Cardápio
           </Button>
           <Button
             size="lg"
             variant="outline"
-            className="border-white bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
+            className="border-white/40 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20"
             onClick={onWhatsAppClick}
           >
             <MessageCircle className="mr-2 h-5 w-5" />
@@ -167,16 +137,12 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
           </Button>
           <Button
             size="lg"
-            className="group bg-[#EA1D2C] text-white hover:bg-[#c9101d]"
+            className="bg-[#EA1D2C] text-white hover:bg-[#c9101d]"
             asChild
           >
-            <a
-              href={IFOOD_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <ExternalLink className="mr-2 h-5 w-5 transition-transform group-hover:scale-110" />
-              Ver cardápio no iFood
+            <a href={IFOOD_URL} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="mr-2 h-5 w-5" />
+              Pedir no iFood
             </a>
           </Button>
         </motion.div>
@@ -189,28 +155,28 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
           className="absolute bottom-8 left-1/2 -translate-x-1/2"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
+            animate={{ y: [0, 8, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
             className="cursor-pointer"
             onClick={onExploreClick}
           >
-            <ChevronDown className="h-10 w-10 text-[#FFC107]" />
+            <ChevronDown className="h-8 w-8 text-white/60" />
           </motion.div>
         </motion.div>
       </div>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-24 left-1/2 z-20 flex -translate-x-1/2 gap-2">
+      <div className="absolute bottom-20 left-1/2 z-20 flex -translate-x-1/2 gap-2">
         {heroImages.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentSlide(index)}
-            className={`h-2 rounded-full transition-all ${
+            className={`h-1.5 rounded-full transition-all ${
               index === currentSlide
-                ? 'w-8 bg-[#FFC107]'
-                : 'w-2 bg-white/50 hover:bg-white/75'
+                ? 'w-6 bg-[#FFC107]'
+                : 'w-1.5 bg-white/40 hover:bg-white/60'
             }`}
-            aria-label={`Go to slide ${index + 1}`}
+            aria-label={`Slide ${index + 1}`}
           />
         ))}
       </div>

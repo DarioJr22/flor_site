@@ -3,6 +3,9 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import { useStore } from '../../lib/store';
+import { getPublicUrl, BUCKETS } from '../../lib/storage';
+
+const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
 
 interface NavigationProps {
   onNavigate: (section: string) => void;
@@ -60,7 +63,7 @@ export function Navigation({ onNavigate }: NavigationProps) {
             onClick={() => handleNavClick('hero')}
             className="flex items-center gap-2 text-xl transition-transform hover:scale-105"
           >
-            <span className="text-3xl">🌺</span>
+            <img src={LOGO_URL} alt="Flor do Maracujá" className="h-10 w-10 rounded-full object-cover" />
             <span
               className={`hidden transition-colors sm:block ${
                 isScrolled

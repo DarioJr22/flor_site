@@ -1,15 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <!-- Meta Tags Básicas -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://flordomaracuja.com/" />
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Restaurant website development</title>
-    </head>
+    <!-- Title & Description (SEO) -->
+    <title>Flor do Maracujá | Restaurante de Comida Regional em Recife</title>
+    <meta
+      name="description"
+      content="Almoço regional com sabor de casa na Imbiribeira, Recife. Custo-benefício imbatível há mais de 15 anos. Peça pelo iFood ou WhatsApp!"
+    />
+    <meta
+      name="keywords"
+      content="restaurante recife, almoço imbiribeira, comida regional, custo benefício, restaurante acessível, marmita recife, delivery recife"
+    />
+    <meta name="author" content="Flor do Maracujá" />
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+    <!-- Open Graph (WhatsApp, Facebook, LinkedIn) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="Flor do Maracujá" />
+    <meta property="og:title" content="Flor do Maracujá — Comida Regional com Sabor de Casa" />
+    <meta
+      property="og:description"
+      content="Almoço com custo-benefício na Imbiribeira, Recife. Receitas caseiras há mais de 15 anos. Atendemos no local, viagem e delivery!"
+    />
+    <meta property="og:url" content="https://flordomaracuja.com/" />
+    <meta
+      property="og:image"
+      content="%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/hero/mesa_posta_2.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Mesa posta com pratos regionais do Flor do Maracujá" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Flor do Maracujá — Comida Regional com Sabor de Casa" />
+    <meta
+      name="twitter:description"
+      content="Almoço com custo-benefício na Imbiribeira, Recife. Receitas caseiras há mais de 15 anos. Peça pelo iFood ou WhatsApp!"
+    />
+    <meta
+      name="twitter:image"
+      content="%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/hero/mesa_posta_2.png"
+    />
+    <meta name="twitter:image:alt" content="Mesa posta com pratos regionais do Flor do Maracujá" />
+
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/logo/logo.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/logo/logo.png"
+    />
+
+    <!-- Performance: Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="%VITE_SUPABASE_URL%" />
+
+    <!-- Structured Data: JSON-LD (LocalBusiness + WebSite) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Restaurant",
+            "@id": "https://flordomaracuja.com/#restaurant",
+            "name": "Flor do Maracujá",
+            "description": "Restaurante de comida regional com sabor de casa. Receitas caseiras há mais de 15 anos na Imbiribeira, Recife.",
+            "url": "https://flordomaracuja.com/",
+            "telephone": "+558134567890",
+            "image": "%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/hero/mesa_posta_2.png",
+            "logo": "%VITE_SUPABASE_URL%/storage/v1/object/public/landing-page/logo/logo.png",
+            "priceRange": "$$",
+            "servesCuisine": ["Comida Regional", "Culinária Brasileira", "Comida Caseira"],
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Av. Mal. Mascarenhas de Morais, 4715",
+              "addressLocality": "Recife",
+              "addressRegion": "PE",
+              "postalCode": "51150-004",
+              "addressCountry": "BR"
+            },
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": -8.112930,
+              "longitude": -34.913680
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "11:00",
+                "closes": "15:00"
+              },
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": "Saturday",
+                "opens": "11:00",
+                "closes": "15:00"
+              }
+            ],
+            "sameAs": [
+              "https://www.instagram.com/flordomaracuja21/"
+            ],
+            "hasMenu": {
+              "@type": "Menu",
+              "url": "https://flordomaracuja.com/#cardapio"
+            },
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "4.7",
+              "reviewCount": "320",
+              "bestRating": "5"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://flordomaracuja.com/#website",
+            "name": "Flor do Maracujá",
+            "url": "https://flordomaracuja.com/",
+            "publisher": { "@id": "https://flordomaracuja.com/#restaurant" }
+          }
+        ]
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- Noscript fallback para SEO crawlers -->
+    <noscript>
+      <h1>Flor do Maracujá — Restaurante de Comida Regional em Recife</h1>
+      <p>
+        Almoço com sabor de casa na Imbiribeira. Receitas caseiras há mais de 15 anos.
+        Rua Mal. Mascarenhas de Morais, 4715 — Imbiribeira, Recife - PE.
+        Telefone: (81) 3456-7890. Instagram: @flordomaracuja21.
+      </p>
+    </noscript>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

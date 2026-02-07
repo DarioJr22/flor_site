@@ -21,6 +21,7 @@ import type { MenuItem } from '../../lib/types';
 interface MenuSectionProps {
   menuItems: MenuItem[];
 }
+const IFOOD_URL = 'https://www.ifood.com.br/delivery/recife-pe/flor-do-maracuja-imbiribeira/e1a8cc86-aee4-4e93-8d4a-3f253b9df32c?utm_medium=share&utm_source=ig&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGn7kwG0ZsoqkBsMtYVQRzbH3TaPCfZ1WpnZclazgwt2CqygfYHM5IVEo9soBQ_aem_R-i7y_Swrc9Om3_6g_55pA';
 
 export function MenuSection({ menuItems }: MenuSectionProps) {
   const [ref, inView] = useInView({
@@ -134,7 +135,7 @@ export function MenuSection({ menuItems }: MenuSectionProps) {
               asChild
             >
               <a
-                href="https://www.ifood.com.br/delivery/porto-velho-ro/flor-do-maracuja"
+                href={IFOOD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
               >
