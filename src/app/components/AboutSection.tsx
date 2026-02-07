@@ -2,31 +2,28 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'motion/react';
 import { useInView } from 'react-intersection-observer';
 import { Award, Heart, Users, ChevronLeft, ChevronRight } from 'lucide-react';
-import { getPublicUrl, BUCKETS } from '../../lib/storage';
+import { getTransformedUrl, BUCKETS } from '../../lib/storage';
 
-// Para trocar as imagens:
-// 1. Acesse o dashboard do Supabase → Storage → bucket "landing-page"
-// 2. Faça upload das imagens na pasta "about/"
-// 3. Atualize os paths abaixo com o nome exato dos arquivos enviados
+// Imagens otimizadas: redimensionadas no servidor para 800×600 com qualidade 75
 const aboutImages = [
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png', { width: 800, height: 600, quality: 75 }),
     caption: 'Nossa cozinha autêntica',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png', { width: 800, height: 600, quality: 75 }),
     caption: 'Ambiente acolhedor',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png', { width: 800, height: 600, quality: 75 }),
     caption: 'Detalhes que fazem a diferença',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png', { width: 800, height: 600, quality: 75 }),
     caption: 'Pratos com apresentação especial',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'about/ambiente.png', { width: 800, height: 600, quality: 75 }),
     caption: 'Tradição e sabor em cada detalhe',
   },
 ];
@@ -100,6 +97,8 @@ export function AboutSection() {
                   <img
                     src={image.url}
                     alt={image.caption}
+                    loading="lazy"
+                    decoding="async"
                     className="h-full w-full object-cover"
                   />
                   {/* Caption overlay */}

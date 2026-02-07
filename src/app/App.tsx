@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Toaster } from './components/ui/sonner';
+import { SplashScreen, shouldShowSplash, markSplashShown } from './components/SplashScreen';
 import { Navigation } from './components/Navigation';
 import { HeroCarousel } from './components/HeroCarousel';
 import { AboutSection } from './components/AboutSection';
@@ -23,6 +24,7 @@ import {
 import { openWhatsApp, trackEvent } from '../lib/utils';
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(shouldShowSplash);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { menuItems, setMenuItems, testimonials } = useStore();
 
@@ -81,6 +83,16 @@ export default function App() {
   };
 
   return (
+    <>
+      {showSplash && (
+        <SplashScreen
+          onComplete={() => {
+            markSplashShown();
+            setShowSplash(false);
+          }}
+        />
+      )}
+
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Navigation */}
       <Navigation onNavigate={handleNavigate} />
@@ -126,5 +138,6 @@ export default function App() {
       {/* Toast Notifications */}
       <Toaster position="top-center" />
     </div>
+    </>
   );
 }

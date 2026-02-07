@@ -1,9 +1,13 @@
 import { Heart, Instagram, MapPin, Phone, Facebook } from 'lucide-react';
 import type { RestaurantInfo } from '../lib/types';
-import { getPublicUrl, BUCKETS } from '../../lib/storage';
+import { getTransformedUrl, BUCKETS } from '../../lib/storage';
 
 const INSTAGRAM_URL = 'https://www.instagram.com/flordomaracuja21/';
-const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
+const LOGO_URL = getTransformedUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png', {
+  width: 80,
+  height: 80,
+  quality: 80,
+});
 
 interface FooterProps {
   info: RestaurantInfo;

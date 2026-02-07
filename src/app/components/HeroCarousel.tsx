@@ -2,36 +2,33 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ChevronDown, MessageCircle, UtensilsCrossed, ExternalLink } from 'lucide-react';
 import { Button } from './ui/button';
-import { getPublicUrl, BUCKETS } from '../../lib/storage';
+import { getTransformedUrl, BUCKETS } from '../../lib/storage';
 
 const IFOOD_URL = 'https://www.ifood.com.br/delivery/recife-pe/flor-do-maracuja-imbiribeira/e1a8cc86-aee4-4e93-8d4a-3f253b9df32c?utm_medium=share&utm_source=ig&utm_content=link_in_bio&fbclid=PAZXh0bgNhZW0CMTEAc3J0YwZhcHBfaWQMMjU2MjgxMDQwNTU4AAGn7kwG0ZsoqkBsMtYVQRzbH3TaPCfZ1WpnZclazgwt2CqygfYHM5IVEo9soBQ_aem_R-i7y_Swrc9Om3_6g_55pA';
 
-const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
+const LOGO_URL = getTransformedUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png', {
+  width: 192,
+  height: 192,
+  quality: 80,
+});
 
-// Para trocar as imagens:
-// 1. Acesse o dashboard do Supabase → Storage → bucket "landing-page"
-// 2. Faça upload das imagens na pasta "hero/"
-// 3. Atualize os paths abaixo com o nome exato dos arquivos enviados
+// Imagens otimizadas: redimensionadas no servidor para 1280×720 com qualidade 75
 const heroImages = [
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/fachada.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'hero/fachada.png', { width: 1280, height: 720, quality: 75 }),
     title: 'Bem-vindo ao Flor do Maracujá',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta.png', { width: 1280, height: 720, quality: 75 }),
     title: 'Receitas Caseiras',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_2.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_2.png', { width: 1280, height: 720, quality: 75 }),
     title: 'Referência de qualidade há mais de 15 anos',
   },
   {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_3.png'),
+    url: getTransformedUrl(BUCKETS.LANDING_PAGE, 'hero/mesa_posta_3.png', { width: 1280, height: 720, quality: 75 }),
     title: 'Planos especiais para empresas',
-  },
-  {
-    url: getPublicUrl(BUCKETS.LANDING_PAGE, 'hero/vem_comer_banner.png'),
-    title: 'No local, para viagem e delivery',
   },
 ];
 
@@ -70,9 +67,13 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
           className="absolute inset-0"
           style={{ zIndex: index === currentSlide ? 1 : 0 }}
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{ backgroundImage: `url(${image.url})` }}
+          <img
+            src={image.url}
+            alt={image.title}
+            loading={index === 0 ? 'eager' : 'lazy'}
+            fetchPriority={index === 0 ? 'high' : 'low'}
+            decoding={index === 0 ? 'sync' : 'async'}
+            className="absolute inset-0 h-full w-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/70" />
         </motion.div>
@@ -90,6 +91,10 @@ export function HeroCarousel({ onExploreClick, onWhatsAppClick }: HeroCarouselPr
           <img
             src={LOGO_URL}
             alt="Flor do Maracujá"
+            loading="eager"
+            fetchPriority="high"
+            width={96}
+            height={96}
             className="mx-auto mb-4 h-24 w-24 rounded-full object-cover shadow-xl"
           />
           <h1 className="font-display text-4xl tracking-wide md:text-6xl">

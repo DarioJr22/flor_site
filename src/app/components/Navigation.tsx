@@ -3,9 +3,13 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { Button } from './ui/button';
 import { useStore } from '../../lib/store';
-import { getPublicUrl, BUCKETS } from '../../lib/storage';
+import { getTransformedUrl, BUCKETS } from '../../lib/storage';
 
-const LOGO_URL = getPublicUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png');
+const LOGO_URL = getTransformedUrl(BUCKETS.LANDING_PAGE, 'logo/logo.png', {
+  width: 80,
+  height: 80,
+  quality: 80,
+});
 
 interface NavigationProps {
   onNavigate: (section: string) => void;

@@ -67,6 +67,19 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="%VITE_SUPABASE_URL%" />
 
+    <!-- Performance: Preload critical images (splash logo + first hero slide) -->
+    <link
+      rel="preload"
+      as="image"
+      href="%VITE_SUPABASE_URL%/storage/v1/render/image/public/landing-page/logo/logo.png?width=352&height=352&quality=80&resize=cover"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="%VITE_SUPABASE_URL%/storage/v1/render/image/public/landing-page/hero/fachada.png?width=1280&height=720&quality=75&resize=cover"
+    />
+
     <!-- Structured Data: JSON-LD (LocalBusiness + WebSite) -->
     <script type="application/ld+json">
       {
