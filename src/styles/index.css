@@ -1,0 +1,54 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Global Styles for Flor do Maracujá */
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Hide scrollbar for carousel elements */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom selection color */
+::selection {
+  background-color: #FFC107;
+  color: #000;
+}
+
+/* Slick carousel overrides for About section */
+.slick-dots li {
+  margin: 0;
+  width: auto;
+  height: auto;
+}
+
+.slick-dots li button:before {
+  display: none;
+}
+
+.slick-dots li > div {
+  transition: all 0.3s ease;
+}
+
+.slick-dots li.slick-active > div {
+  width: 1.5rem;
+  background-color: #FFC107;
+  border-radius: 9999px;
+}
