@@ -13,11 +13,7 @@ export const restaurantInfo: RestaurantInfo = {
     lng: -34.913680,
   },
   hours: [
-    { day: 'Segunda a Sexta', open: '11:00', close: '15:00' },
-    { day: 'Segunda a Sexta', open: '18:00', close: '22:00' },
-    { day: 'Sábado', open: '11:00', close: '16:00' },
-    { day: 'Sábado', open: '18:00', close: '23:00' },
-    { day: 'Domingo', open: '11:00', close: '16:00' },
+    { day: 'Segunda a Sexta', open: '10:00', close: '14:00' },
   ],
 };
 
