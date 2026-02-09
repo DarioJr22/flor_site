@@ -80,6 +80,32 @@ export function LeadCaptureForm() {
   // Hook de submissão
   const { submitLead, isSubmitting, result, resetResult } = useLeadCapture();
 
+  // --- Auto-scroll via hash ou query param (?cadastro=true / #cadastro) ---
+  useEffect(() => {
+    const shouldScroll =
+      window.location.hash === '#cadastro' ||
+      new URLSearchParams(window.location.search).get('cadastro') === 'true';
+
+    if (shouldScroll) {
+      // Aguarda o DOM renderizar para scrollar
+      setTimeout(() => {
+        const el = document.getElementById('cliente-especial');
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 500);
+    }
+
+    const handleHash = () => {
+      if (window.location.hash === '#cadastro') {
+        const el = document.getElementById('cliente-especial');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
+
   // --- Restaurar rascunho do localStorage ---
   useEffect(() => {
     try {
