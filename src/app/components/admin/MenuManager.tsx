@@ -13,6 +13,7 @@ import {
   Check,
   ImageIcon,
 } from 'lucide-react';
+import { PrintMenuButton } from './PrintMenuButton';
 
 const EMPTY_FORM: MenuItemInsert = {
   name: '',
@@ -120,17 +121,20 @@ export function MenuManager() {
   return (
     <div>
       {/* Header */}
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <h2 className="text-xl font-bold text-gray-900">Cardápio</h2>
           <p className="text-sm text-gray-500">{items.length} itens cadastrados</p>
         </div>
-        <button
-          onClick={openCreate}
-          className="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
-        >
-          <Plus size={16} /> Novo Item
-        </button>
+        <div className="flex items-center gap-3">
+          <PrintMenuButton items={items} />
+          <button
+            onClick={openCreate}
+            className="flex items-center gap-2 rounded-lg bg-amber-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-700"
+          >
+            <Plus size={16} /> Novo Item
+          </button>
+        </div>
       </div>
 
       {error && (
