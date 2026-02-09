@@ -81,6 +81,19 @@
     />
 
     <!-- Structured Data: JSON-LD (LocalBusiness + WebSite) -->
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%VITE_GA4_MEASUREMENT_ID%"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '%VITE_GA4_MEASUREMENT_ID%', {
+        send_page_view: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
+
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",

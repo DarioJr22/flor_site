@@ -7,7 +7,7 @@ import { AboutSection } from './components/AboutSection';
 import { MenuSection } from './components/MenuSection';
 import { TestimonialsSection } from './components/TestimonialsSection';
 import { LocationSection } from './components/LocationSection';
-import { ClienteEspecialForm } from './components/ClienteEspecialForm';
+import { LeadCaptureForm } from './components/LeadCaptureForm';
 import { PromoBanners } from './components/PromoBanners';
 import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { CartDrawer } from './components/CartDrawer';
@@ -22,11 +22,15 @@ import {
   restaurantInfo,
 } from '../lib/mockData';
 import { openWhatsApp, trackEvent } from '../lib/utils';
+import { useGA4PageTracking } from '../hooks/useGA4PageTracking';
 
 export default function App() {
   const [showSplash, setShowSplash] = useState(shouldShowSplash);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { menuItems, setMenuItems, testimonials } = useStore();
+
+  // GA4 page-level tracking (scroll, sections, engagement, UTMs)
+  useGA4PageTracking();
 
   // Fetch from Supabase
   const { items: supabaseMenu, loading: menuLoading } = usePublicMenu();
@@ -114,8 +118,8 @@ export default function App() {
       {/* Menu Section */}
       <MenuSection menuItems={displayMenuItems} />
 
-      {/* Cliente Especial Form */}
-      <ClienteEspecialForm />
+      {/* Lead Capture Form */}
+      <LeadCaptureForm />
 
       {/* Testimonials */}
       <TestimonialsSection testimonials={displayTestimonials} />
