@@ -6,7 +6,7 @@ export const restaurantInfo: RestaurantInfo = {
   about: 'Há mais de 15 anos servindo o melhor da culinária regional brasileira com receitas passadas de geração em geração. Aqui, cada prato conta uma história de amor, tradição e sabores autênticos que aquecem o coração.',
   address: 'Av. Mal. Mascarenhas de Morais, 4715 - Imbiribeira, Recife - PE, 51150-004',
   phone: '(81) 3456-7890',
-  whatsapp: '5581987654321',
+  whatsapp: '558199678850',
   instagram: '@flordomaracuja21',
   coordinates: {
     lat: -8.112930,
