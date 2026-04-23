@@ -25,6 +25,7 @@
 - [Variáveis de Ambiente](#-variáveis-de-ambiente)
 - [Banco de Dados (Supabase)](#-banco-de-dados-supabase)
 - [Painel Administrativo](#-painel-administrativo)
+- [Tickets Empresariais](#-tickets-empresariais)
 - [Captura de Leads](#-captura-de-leads)
 - [Google Analytics 4](#-google-analytics-4)
 - [Estrutura do Projeto](#-estrutura-do-projeto)
@@ -104,6 +105,7 @@ O design foi concebido no [Figma](https://www.figma.com/design/DckSNkUE4fWJbML9N
   - **Pedidos** — Visualização e gestão de pedidos
   - **Avaliações** — Gerenciamento de depoimentos/reviews
   - **Leads** — Visualização e gestão de leads capturados
+  - **Tickets Empresariais** — Gestão de tickets de alimentação corporativos (importação, impressão térmica, relatórios)
 
 ### 📍 Localização
 - Google Maps embutido com coordenadas do restaurante
@@ -267,6 +269,62 @@ Acessível em `/admin` (protegido por autenticação Supabase).
 - **Pedidos (`OrdersManager`)** — Visualizar e atualizar status de pedidos
 - **Avaliações (`ReviewsManager`)** — Aprovar/rejeitar depoimentos de clientes
 - **Leads (`LeadsManager`)** — Visualizar e exportar leads capturados
+- **Tickets (`TicketsManager`)** — Gestão completa de tickets de alimentação empresarial
+  - **Empresas** — Cadastro e gerenciamento de empresas clientes (CNPJ, dias de fornecimento, valor por ticket)
+  - **Importação** — Colagem de relatórios em texto, parsing automático, grid editável, impressão térmica POS-80 (80mm) ou PDF
+  - **Histórico** — Filtros por empresa/período/status, gráficos (Recharts), exportação CSV e PDF paginado
+
+---
+
+## 🎫 Tickets Empresariais
+
+Módulo completo para gestão de tickets de alimentação de empresas que contratam o fornecimento diário de refeições.
+
+### Fluxo Principal
+
+```
+Cadastra empresa → Cola relatório de pedidos → Parser detecta separador e valida
+  → Grid editável para correções → Salva no Supabase (lote)
+  → Imprime etiquetas na POS-80 via window.print() (80mm)
+  → Histórico com filtros + gráficos (Recharts) → Exporta PDF/CSV
+```
+
+### Tabelas no Supabase
+
+| Tabela | Descrição |
+|---|---|
+| `empresas_clientes` | Cadastro de empresas (CNPJ, dias de fornecimento, valor por ticket, status) |
+| `tickets_alimentacao` | Registros individuais de pedidos (funcionário, carne, acompanhamentos, status) |
+| `vw_relatorio_consumo_empresas` | View agregada para relatórios (total tickets, valor, ticket médio) |
+
+### Parser de Relatórios (`parseRelatorio`)
+
+- Detecção automática de separador (`;`, `\t`, `|`, `,`)
+- Detecção e skip automático de linhas de cabeçalho
+- Validação de campos obrigatórios (mínimo: nome + carne)
+- Capitalização automática de nomes
+- Relatório de erros por linha
+
+### Impressão Térmica (POS-80)
+
+- Impressão via **driver Windows** (USB) usando `window.print()`
+- Compatível com impressoras **POS-80** e **POS80 Printer** instaladas no Windows
+- Layout HTML/CSS formatado para papel térmico 80mm (`@page { size: 80mm auto }`)
+- Impressão individual ou em lote (todas as etiquetas em um único diálogo)
+- Sem necessidade de Web Serial API ou conexão manual
+
+### Arquivos Relacionados
+
+| Arquivo | Responsabilidade |
+|---|---|
+| `src/lib/tickets/parseRelatorio.ts` | Parser de relatórios colados (auto-detect separador) |
+| `src/lib/tickets/impressoraESCPOS.ts` | Impressão térmica POS-80 via window.print() (80mm) |
+| `src/lib/tickets/etiquetaLayout.ts` | Geração de etiquetas em PDF (fallback) |
+| `src/lib/tickets/relatorios.ts` | Relatórios PDF/CSV com brand styling |
+| `src/hooks/useEmpresas.ts` | CRUD de empresas clientes |
+| `src/hooks/useTickets.ts` | CRUD de tickets de alimentação |
+| `src/hooks/useImpressoraGT710.ts` | Hook React para impressora POS-80 |
+| `migrations/003_tickets_empresariais.sql` | Migração SQL (tabelas, triggers, RLS, view) |
 
 ---
 
@@ -414,7 +472,15 @@ flor_site/
     │       │   ├── OrdersManager.tsx   # Gestão de pedidos
     │       │   ├── ReviewsManager.tsx  # Gestão de avaliações
     │       │   ├── LeadsManager.tsx    # Gestão de leads
-    │       │   └── ImageUploader.tsx   # Upload de imagens (Supabase Storage)
+    │       │   ├── ImageUploader.tsx   # Upload de imagens (Supabase Storage)
+    │       │   ├── TicketsManager.tsx  # ★ Root do módulo de tickets empresariais
+    │       │   └── tickets/            # ★ Sub-componentes de tickets
+    │       │       ├── EmpresasTab.tsx       # CRUD de empresas clientes
+    │       │       ├── EmpresaFormDialog.tsx  # Modal de cadastro/edição de empresa
+    │       │       ├── ImportacaoTab.tsx      # Importação de relatório + impressão
+    │       │       ├── GridPedidos.tsx        # Grade editável de pedidos
+    │       │       ├── ImpressoraControls.tsx # Status e controle da impressora POS-80
+    │       │       └── HistoricoTab.tsx       # Histórico com gráficos e exportação
     │       │
     │       ├── auth/
     │       │   ├── LoginPage.tsx       # Página de login admin
@@ -439,7 +505,10 @@ flor_site/
     │   ├── useReviews.ts       # CRUD de avaliações (admin)
     │   ├── usePromoBanners.ts  # CRUD de promoções (admin)
     │   ├── usePublicMenu.ts    # Leitura pública do cardápio
-    │   └── usePublicPromoBanners.ts # Leitura pública de promoções
+    │   ├── usePublicPromoBanners.ts # Leitura pública de promoções
+    │   ├── useEmpresas.ts      # ★ CRUD de empresas clientes (tickets)
+    │   ├── useTickets.ts       # ★ CRUD de tickets de alimentação
+    │   └── useImpressoraGT710.ts # ★ Hook para impressora POS-80 (window.print)
     │
     ├── lib/
     │   ├── analytics.ts        # ★ Módulo centralizado GA4 (eventos + UTMs + scoring)
@@ -450,7 +519,12 @@ flor_site/
     │   ├── types.ts            # Interfaces (MenuItem, CartItem, Customer, etc.)
     │   ├── store.ts            # Store Zustand (cart, theme, admin)
     │   ├── mockData.ts         # Dados mock para fallback
-    │   └── utils.ts            # Utilitários (formatCurrency, WhatsApp, etc.)
+    │   ├── utils.ts            # Utilitários (formatCurrency, WhatsApp, etc.)
+    │   └── tickets/            # ★ Módulo de tickets empresariais
+    │       ├── parseRelatorio.ts    # Parser de relatórios colados (auto-detect separador)
+    │       ├── impressoraESCPOS.ts  # Impressão térmica POS-80 (window.print 80mm)
+    │       ├── etiquetaLayout.ts    # Geração de etiquetas em PDF (fallback)
+    │       └── relatorios.ts        # Relatórios PDF/CSV com brand styling
     │
     └── styles/
         ├── index.css           # Imports globais
@@ -478,7 +552,7 @@ Coração do cardápio digital. Extrai categorias dinamicamente dos dados (Supab
 Drawer lateral com spring animations. Implementa checkout em duas etapas — o cliente revisa o pedido, aplica código promo, adiciona endereço, e finaliza enviando tudo via WhatsApp com mensagem pré-formatada.
 
 ### `AdminLayout.tsx`
-Layout do painel administrativo com navegação por tabs (Cardápio, Promoções, Pedidos, Avaliações, Leads). Protegido por `ProtectedRoute` com autenticação Supabase.
+Layout do painel administrativo com navegação por tabs (Cardápio, Promoções, Pedidos, Avaliações, Leads, Tickets). Protegido por `ProtectedRoute` com autenticação Supabase.
 
 ---
 
@@ -509,6 +583,8 @@ Cada tabela possui um hook dedicado com operações CRUD via Supabase client:
 | `useReviews` | `reviews` | Admin |
 | `useLeads` | `leads` | Admin |
 | `useLeadCapture` | `leads` | Público (formulário) |
+| `useEmpresas` | `empresas_clientes` | Admin (tickets) |
+| `useTickets` | `tickets_alimentacao` | Admin (tickets) |
 
 ### Contextos React
 

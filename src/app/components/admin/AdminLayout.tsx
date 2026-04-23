@@ -10,12 +10,14 @@ import {
   LogOut,
   Home,
   Loader2,
+  Ticket,
 } from 'lucide-react';
 import { MenuManager } from './MenuManager';
 import { PromoBannersManager } from './PromoBannersManager';
 import { OrdersManager } from './OrdersManager';
 import { ReviewsManager } from './ReviewsManager';
 import { LeadsManager } from './LeadsManager';
+import { TicketsManager } from './TicketsManager';
 
 const tabs = [
   { id: 'menu',    label: 'Cardápio',   icon: UtensilsCrossed },
@@ -23,6 +25,7 @@ const tabs = [
   { id: 'orders',  label: 'Pedidos',    icon: ShoppingBag },
   { id: 'reviews', label: 'Avaliações', icon: Star },
   { id: 'leads',   label: 'Leads',      icon: Users },
+  { id: 'tickets', label: 'Tickets',    icon: Ticket },
 ] as const;
 
 type TabId = (typeof tabs)[number]['id'];
@@ -46,6 +49,7 @@ export function AdminLayout() {
       case 'orders':  return <OrdersManager />;
       case 'reviews': return <ReviewsManager />;
       case 'leads':   return <LeadsManager />;
+      case 'tickets': return <TicketsManager />;
     }
   };
 
